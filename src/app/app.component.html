@@ -1,0 +1,76 @@
+<div class="container">
+  @if (notificationMsg) {
+    <div class="notification-toast" [class.show]="notificationMsg">
+      {{ notificationMsg }}
+    </div>
+  }
+
+  <header>
+    <h1>Books Application</h1>
+  </header>
+
+  <section class="form-section">
+    <h2>Add New Book</h2>
+    <div class="input-group">
+      <input id="newBook" placeholder="Title">
+      <input id="newDesc" placeholder="Description">
+      <input id="newPrice" placeholder="Price">
+      <input id="newAuthor" placeholder="Author">
+      <input id="newDate" type="date">
+      <button class="btn-add" (click)='addBook()'>Add Book</button>
+    </div>
+  </section>
+
+  @if (editingBook) {
+    <section class="form-section edit-mode">
+      <h2>Editing: {{editingBook.title}}</h2>
+      <div class="input-group">
+        <input id="editTitle" [value]="editingBook.title">
+        <input id="editDesc" [value]="editingBook.desc">
+        <input id="editPrice" [value]="editingBook.price">
+        <input id="editAuthor" [value]="editingBook.author">
+        <input id="editDate" type="date" [value]="editingBook.publishDate">
+        <div class="button-row">
+          <button class="btn-update" (click)="updateBook()">Update</button>
+          <button class="btn-cancel" (click)="editingBook = null">Cancel</button>
+        </div>
+      </div>
+    </section>
+  }
+
+  <section class="table-section">
+    <table>
+      <thead>
+        <tr>
+          <th>Title</th>
+          <th>Description</th>
+          <th>Price</th>
+          <th>Author</th>
+          <th>Publish Date</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (book of books; track book.id) {
+          <tr>
+            <td class="bold-text">{{ book.title }}</td>
+            <td>{{ book.desc }}</td>
+            <td>${{ book.price }}</td>
+            <td>{{ book.author }}</td>
+            <td>{{ book.publishDate }}</td>
+            <td>
+              <button class="btn-edit" (click)="editBook(book)">Edit</button>
+              <button class="btn-delete" (click)="deleteBook(book.id)">Delete</button>
+            </td>
+          </tr>
+        } @empty {
+          <tr>
+            <td colspan="6" class="empty-msg">No books available in the collection.</td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </section>
+</div>
+
+<router-outlet />
